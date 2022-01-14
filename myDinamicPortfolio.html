@@ -1,0 +1,170 @@
+   <html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      var dinamicArr = 
+[
+  {
+    "key" : "Yandex",
+    "history" : [
+      {
+        "date"  : "2012-04-23",
+        "open"  : 1000,
+        "close" : 2000
+      },
+      {
+        "date"  : "2012-04-25",
+        "open"  : 2000,
+        "close" : 4000
+      },
+      {
+        "date"  : "2012-04-26T16:00:00",
+        "open"  : 5500,
+        "close" : 6000
+      }
+  
+    ]
+  },
+  {
+    "key" : "Google",
+    "history" : [
+      {
+        "date"  : "2012-04-23",
+        "open"  : 4000,
+        "close" : 5000
+      },
+      {
+        "date"  : "2012-04-25",
+        "open"  : 6000,
+        "close" : 7000
+      },
+      {
+        "date"  : "2012-04-26T17:00:22",
+        "open"  : 5000,
+        "close" : 6000
+      }
+  
+    ]
+  },
+   {
+    "key" : "Mail",
+    "history" : [
+      {
+        "date"  : "2012-04-23",
+        "open"  : 4600,
+        "close" : 5300
+      },
+      {
+        "date"  : "2012-04-25",
+        "open"  : 6700,
+        "close" : 7800
+      },
+      {
+        "date"  : "2012-04-26T17:00:22",
+        "open"  : 5800,
+        "close" : 6200
+      }
+  
+    ]
+  }
+
+ ];
+var portfolioArr = [
+  {
+    "symbol": "Yandex",
+    "cost": 1,
+    "yield": 3,
+    "stock": 6,
+    "volatility": 0.8
+  },
+  {
+    "symbol": "Google",
+    "cost": 3,
+    "yield": 4,
+    "stock": 3,
+    "volatility": 0.5
+  },
+  {
+    "symbol": "Mail",
+    "cost": 3,
+    "yield": 4,
+    "stock": 2,
+    "volatility": 0.5
+  }
+];
+
+var totalCost = [];
+totalCost[0] = (dinamicArr[0].history[0].open*portfolioArr[0].stock+dinamicArr[1].history[0].open*portfolioArr[1].stock+dinamicArr[2].history[0].open*portfolioArr[2].stock);
+totalCost[1] = (dinamicArr[0].history[1].open*portfolioArr[0].stock+dinamicArr[1].history[1].open*portfolioArr[1].stock+dinamicArr[2].history[1].open*portfolioArr[2].stock);
+totalCost[2] = (dinamicArr[0].history[2].open*portfolioArr[0].stock+dinamicArr[1].history[2].open*portfolioArr[1].stock+dinamicArr[2].history[2].open*portfolioArr[2].stock);
+console.log (totalCost);
+
+var datesPortfolio = [];
+datesPortfolio[0] = dinamicArr[0].history[0].date;
+datesPortfolio[1] = dinamicArr[0].history[1].date;
+datesPortfolio[2] = dinamicArr[0].history[2].date;
+console.log (datesPortfolio);
+google.charts.load('current', {'packages':['corechart']});
+     google.charts.setOnLoadCallback(drawChart1);
+
+ function drawChart1() {
+        var data = google.visualization.arrayToDataTable([
+          ['Date', 'Cost'],
+          [datesPortfolio[0],  totalCost[0]],
+          [datesPortfolio[1],  totalCost[1]],
+          [datesPortfolio[2],  totalCost[2]]
+        ]);
+
+        var options = {
+          title: 'The Portfolio cost',
+          hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+
+
+var ArrGoogleChartsData = [['Date']];
+for (var m in dinamicArr)
+{
+  ArrGoogleChartsData[0].push(dinamicArr[m].key);
+}
+
+  for (var i in dinamicArr[0].history)
+  {
+    var dinamicArrDaily = [dinamicArr[0].history[i].date]
+      for (var j in dinamicArr)
+      {
+         dinamicArrDaily.push(dinamicArr[j].history[i].open);
+      }
+          console.log('dinamicArrDaily = ', dinamicArrDaily);
+          ArrGoogleChartsData.push(dinamicArrDaily);
+  }
+
+  console.log(ArrGoogleChartsData);
+   function drawChart() 
+   {
+        var data = google.visualization.arrayToDataTable(ArrGoogleChartsData);
+
+        var options = {
+          title: 'Instruments in the investment portfolio',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+
+    </script>
+  </head>
+  <body>
+    <div id="curve_chart" style="width: 100%; height: 500px"></div>
+    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+  </body>
+</html>
